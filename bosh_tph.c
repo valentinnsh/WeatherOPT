@@ -13,7 +13,6 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <errno.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <linux/i2c-dev.h>
 #include <linux/i2c.h>
@@ -213,7 +212,6 @@ int bme280_getmgrmt(bme280_t *ctx, int32_t *temp, uint32_t *pres, uint32_t *hum)
 
   *temp = bme280_comp_temp_32bit(ctx,uncomp_temp);
   *pres = bme280_comp_pres_int32(ctx,uncomp_pres);
-  //while I am not suare about how temp and pres compensation works. humidity will be uncompencate
   *hum = bme280_comp_hum_int32(ctx,uncomp_hum);
   return 0;
 }
@@ -339,7 +337,7 @@ int main(int argc, char **argv)
 
   check_BME = bme280_getmgrmt(&sens, &ch_temp, &ch_pres, &ch_hum);
   printf("Temp = %f gradC\nPres = %fmmHg\nHum = %f procent\n", ((double)ch_temp)/100, ((double)ch_pres)/133.322, ((double)ch_hum)/1024.);
-
+  //TODO - Add compensation functions, that already returns mesurements as a double
   return 0;
 }
 
