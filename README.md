@@ -3,8 +3,8 @@ Project of Weather station, based at OrangePI One.
 
 I am using Bosh BME280 sensor. It can measure temperature, hunidity and pressure. Sensor has i2s bus, so i will work with it as i2c-slawe
 
-Also, I want am writing Telegram-bot, that can call measureations and send message with result. Bot will be written, using python.
 
+There are also very simple Telegram Bot, that can be runned at the orangePi. It can send you mesurements, taken fron Bosh sensor, once per minute. Still have a lot of things, I want to to add to this bot.
 
 
 Links:
