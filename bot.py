@@ -1,6 +1,6 @@
 #
 # Copyright (c)
-# 22018 V.Shishkin
+# 2018 V.Shishkin
 #
 #
 
