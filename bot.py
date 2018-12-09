@@ -2,7 +2,6 @@
 # Copyright (c)
 # 2018 V.Shishkin
 #
-#
 
 # -*- coding: utf-8 -*-
 
