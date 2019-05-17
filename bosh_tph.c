@@ -27,7 +27,7 @@ struct BME280_s {
   int file_po;
 
   int32_t t_fine;
-  
+
   /*Compensation parameter storage*/
   //Temperature
   uint16_t dig_T1;
@@ -60,6 +60,8 @@ int bme280_read_array(bme280_t *ctx, uint8_t register_num, uint8_t *arr, uint8_t
 int32_t bme280_comp_temp_32bit(bme280_t *dev, uint32_t uncomp_temp);
 uint32_t bme280_comp_pres_int32(bme280_t *dev, uint32_t adc_P);
 uint32_t bme280_comp_hum_int32(bme280_t *dev, uint32_t adc_H);
+
+
 
 int open_BME_sensor(bme280_t *ctx)
 {
@@ -275,13 +277,37 @@ uint32_t bme280_comp_hum_int32(bme280_t *dev, uint32_t adc_H)
   v_x1_u32r = (dev->t_fine - ((int32_t)76800));
   v_x1_u32r = (((((adc_H << 14) - (((int32_t)dev->dig_H4) << 20) - (((int32_t)dev->dig_H5) * v_x1_u32r)) +
                  ((int32_t)16384)) >> 15) * (((((((v_x1_u32r * ((int32_t)dev->dig_H6)) >> 10) * (((v_x1_u32r *
-((int32_t)dev->dig_H3)) >> 11) + ((int32_t)32768))) >> 10) + ((int32_t)2097152)) *
-((int32_t)dev->dig_H2) + 8192) >> 14));
+												   ((int32_t)dev->dig_H3)) >> 11) + ((int32_t)32768))) >> 10) + ((int32_t)2097152)) *
+					      ((int32_t)dev->dig_H2) + 8192) >> 14));
   v_x1_u32r = (v_x1_u32r - (((((v_x1_u32r >> 15) * (v_x1_u32r >> 15)) >> 7) * ((int32_t)dev->dig_H1)) >> 4));
   v_x1_u32r = (v_x1_u32r < 0 ? 0 : v_x1_u32r);
   v_x1_u32r = (v_x1_u32r > 419430400 ? 419430400 : v_x1_u32r);
   return (uint32_t)(v_x1_u32r>>12);
 }
+
+char* stradd(const char* a, const char* b){
+  size_t len = strlen(a) + strlen(b);
+  char *ret = (char*)malloc(len * sizeof(char) + 1);
+  *ret = '\0';
+  return strcat(strcat(ret, a) ,b);
+}
+
+void gen_data_html(int32_t ch_temp, uint32_t ch_hum, uint32_t ch_pres;)
+{
+  char data[] = "<!DOCTYPE html>\n<html>\n<body>\n<p>Weather:</p>\nTemperature = ";
+//29.450000 gradC\nPressure = 743.770721mmHg\nHumidity = 22.430664 procent\n</body>\n </html>";
+  sprintf(data,stradd(data,"%d gradC\nPressure = "), ср_temp);
+  sprintf(data,stradd(data,"%d mmHg\nHumidity = "), ср_pres);
+  sprintf(data,stradd(data,"%d procent\n</body>\n </html>"), ср_hum);
+
+  file *fp;
+
+  fp = fopen("data.html", "w");
+  fprintf_check = fprintf(fp);
+  fclose(fp);
+  printf("%d\n",fprintf_check);
+}
+
 //
 //
 //
@@ -340,4 +366,3 @@ int main(int argc, char **argv)
   //TODO - Add compensation functions, that already returns mesurements as a double
   return 0;
 }
-
